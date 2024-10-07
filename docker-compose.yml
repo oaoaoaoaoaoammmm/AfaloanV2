@@ -1,0 +1,128 @@
+services:
+
+  afa-postgres:
+    container_name: afa-postgres
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./database/init_databases.sql:/docker-entrypoint-initdb.d/init_databases.sql
+    profiles:
+      - cloud
+      - local
+
+  afa-minio:
+    container_name: afa-minio
+    image: bitnami/minio:2024
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: username
+      MINIO_ROOT_PASSWORD: password
+      MINIO_DEFAULT_BUCKETS: afaloan
+#    volumes:
+#      -
+    profiles:
+      - cloud
+      - local
+
+  afa-discovery:
+    container_name: afa-discovery
+    image: afa-discovery
+    ports:
+      - "8761:8761"
+    build:
+      context: "afa-discovery"
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: cloud
+      PORT: 8761
+    profiles:
+      - cloud
+
+  afa-config:
+    container_name: afa-config
+    image: afa-config
+    ports:
+      - "8888:8888"
+    build:
+      context: "afa-config"
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      DISCOVERY_SERVER_URL: http://afa-discovery:8761/eureka
+      PORT: 8888
+    depends_on:
+      - afa-discovery
+    profiles:
+      - cloud
+
+  afa-admin:
+    container_name: afa-admin
+    image: afa-admin
+    ports:
+      - "8187:8187"
+    build:
+      context: "afa-admin"
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: cloud
+      DISCOVERY_SERVER_URL: http://afa-discovery:8761/eureka
+      PORT: 8187
+    depends_on:
+      - afa-config
+    profiles:
+      - cloud
+
+  afa-gateway:
+    container_name: afa-gateway
+    image: afa-gateway
+    ports:
+      - "8080:8080"
+    build:
+      context: "afa-gateway"
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: cloud
+      DISCOVERY_SERVER_URL: http://afa-discovery:8761/eureka
+      API_PREFIX: api/v2
+      PORT: 8080
+    depends_on:
+      - afa-config
+    profiles:
+      - cloud
+
+  afaloan:
+    container_name: afaloan
+    image: afaloan
+    ports:
+      - "8381:8381"
+    build:
+      context: "Afaloan"
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: cloud
+      DB_URL: jdbc:postgresql://afa-postgres:5432/afaloan
+      DB_USER: username
+      DB_PASSWORD: password
+      MINIO_ENDPOINT: http://afa-minio:9000
+      MINIO_ACCESS_KEY: username
+      MINIO_SECRET_KEY: password
+      MINIO_BUCKET: afaloan
+      MINIO_REGION: us-east-1
+      SECRET: aGZiYmtiYWllYmNpZWFpZWJsZWNldWNlY2xhZWNhaWJlbGNhZWN3Q0VCV0VXSUM=
+      ACCESS: 1
+      REFRESH: 24
+      DISCOVERY_SERVER_URL: http://afa-discovery:8761/eureka
+    depends_on:
+      - afa-postgres
+      - afa-minio
+      - afa-discovery
+      - afa-config
+      - afa-gateway
+    profiles:
+      - cloud

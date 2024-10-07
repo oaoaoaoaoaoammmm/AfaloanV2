@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-microloans-table
+      author: d.muxabat
+      changes:
+        - createTable:
+            schemaName: application
+            tableName: microloans
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sum
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monthly_interest
+                  type: decimal(5, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: conditions
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monthly_income_requirement
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: other_requirements
+                  type: varchar(200)

@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-processes-table
+      author: d.afanasev
+      changes:
+        - createTable:
+            schemaName: application
+            tableName: processes
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: debt
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bid_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableSchemaName: application
+            baseTableName: processes
+            baseColumnNames: bid_id
+            referencedTableSchemaName: application
+            referencedTableName: bids
+            referencedColumnNames: id
+            constraintName: fk_processes_to_bids
+            onDelete: CASCADE
+            onUpdate: CASCADE

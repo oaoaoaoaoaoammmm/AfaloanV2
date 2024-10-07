@@ -1,0 +1,35 @@
+info:
+  app:
+    name: afaloan
+    description: Microloans service
+  team:
+    name: D2 team
+
+spring:
+  application:
+    name: afaloan
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  liquibase:
+    liquibaseSchema: migration
+    change-log: classpath:/db/changelog/master.yml
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.default_schema: application
+
+springdoc:
+  api-docs:
+    enabled: true
+
+api:
+  job:
+    scheduler:
+      process-debt: 0 0 0 ? * MON#1
+
+server:
+  port: ${PORT:8381}

@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-bids-table
+      author: d.afanasev
+      changes:
+        - createTable:
+            schemaName: application
+            tableName: bids
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: target
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cover_letter
+                  type: varchar(500)
+              - column:
+                  name: date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: priority
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: employee_message
+                  type: varchar(64)
+              - column:
+                  name: profile_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: microloan_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: boiling_point_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableSchemaName: application
+            baseTableName: bids
+            baseColumnNames: profile_id
+            referencedTableSchemaName: application
+            referencedTableName: profiles
+            referencedColumnNames: id
+            constraintName: fk_bids_to_profiles
+            onDelete: CASCADE
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            baseTableSchemaName: application
+            baseTableName: bids
+            baseColumnNames: microloan_id
+            referencedTableSchemaName: application
+            referencedTableName: microloans
+            referencedColumnNames: id
+            constraintName: fk_bids_to_microloans
+            onDelete: CASCADE
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            baseTableSchemaName: application
+            baseTableName: bids
+            baseColumnNames: boiling_point_id
+            referencedTableSchemaName: application
+            referencedTableName: boiling_points
+            referencedColumnNames: id
+            constraintName: fk_bids_to_boiling_points
+            onDelete: CASCADE
+            onUpdate: CASCADE

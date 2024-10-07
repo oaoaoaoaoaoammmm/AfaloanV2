@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-boiling-points-table
+      author: d.afanasev
+      changes:
+        - createTable:
+            schemaName: application
+            tableName: boiling_points
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: city
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: opening_hours
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: info
+                  type: varchar(200)
