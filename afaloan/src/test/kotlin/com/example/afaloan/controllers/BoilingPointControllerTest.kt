@@ -1,7 +1,7 @@
 package com.example.afaloan.controllers
 
 import com.example.afaloan.BaseIntegrationTest
-import com.example.afaloan.controller.boilingpoints.dtos.CreateBoilingPointResponse
+import com.example.afaloan.controllers.boilingpoints.dtos.CreateBoilingPointResponse
 import com.example.afaloan.utils.createCreateBoilingPointRequest
 import com.example.afaloan.utils.createUpdateBoilingPointRequest
 import com.example.afaloan.utils.toJson
@@ -27,7 +27,7 @@ class BoilingPointControllerTest : BaseIntegrationTest() {
     fun `find should return OK`() {
         val boilingPointId = createBoilingPoint()
         mockMvc.perform(
-            get("$API_PREFIX/boiling-points/$boilingPointId")
+            get("/boiling-points/$boilingPointId")
         ).andExpectAll(
             status().isOk,
             jsonPath("$.id").isNotEmpty,
@@ -40,7 +40,7 @@ class BoilingPointControllerTest : BaseIntegrationTest() {
     fun `update should return OK`() {
         val boilingPointId = createBoilingPoint()
         mockMvc.perform(
-            put("$API_PREFIX/boiling-points/$boilingPointId")
+            put("/boiling-points/$boilingPointId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createUpdateBoilingPointRequest().toJson())
         ).andExpectAll(
@@ -55,13 +55,13 @@ class BoilingPointControllerTest : BaseIntegrationTest() {
     fun `delete should return OK`() {
         val boilingPointId = createBoilingPoint()
         mockMvc.perform(
-            delete("$API_PREFIX/boiling-points/$boilingPointId")
+            delete("/boiling-points/$boilingPointId")
         ).andExpect(status().isNoContent)
     }
 
     private fun createBoilingPoint(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/boiling-points")
+            post("/boiling-points")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateBoilingPointRequest().toJson())
         ).andExpectAll(

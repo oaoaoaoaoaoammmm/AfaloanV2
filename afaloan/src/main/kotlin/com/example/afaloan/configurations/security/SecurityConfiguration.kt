@@ -30,8 +30,7 @@ class SecurityConfiguration(
                 configurer.requestMatchers(
                     "/actuator/**",
                     "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/auth/**"
+                    "/v3/api-docs/**"
                 ).permitAll()
                     .requestMatchers(
                         "/**"

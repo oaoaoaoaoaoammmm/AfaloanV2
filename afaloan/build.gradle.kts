@@ -49,9 +49,6 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     implementation ("net.lbruun.springboot:preliquibase-spring-boot-starter:$preliquibaseVersion")
 
-    // minio
-    implementation("io.minio:minio:$minioVersion")
-
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -61,11 +58,6 @@ dependencies {
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
-
-    // jwt
-    implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
-    implementation("io.jsonwebtoken:jjwt-impl:$jwtVersion")
-    implementation("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
     // shedlock
     implementation("net.javacrumbs.shedlock:shedlock-spring:$shedLockVersion")
@@ -79,7 +71,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
-    testImplementation("org.testcontainers:minio")
 
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiStarterVersion")

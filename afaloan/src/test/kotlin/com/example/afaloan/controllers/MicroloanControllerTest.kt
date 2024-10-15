@@ -1,7 +1,7 @@
 package com.example.afaloan.controllers
 
 import com.example.afaloan.BaseIntegrationTest
-import com.example.afaloan.controller.microloans.dtos.CreateMicroloanResponse
+import com.example.afaloan.controllers.microloans.dtos.CreateMicroloanResponse
 import com.example.afaloan.utils.createMicroloanDto
 import com.example.afaloan.utils.toJson
 import com.example.afaloan.utils.toObject
@@ -26,7 +26,7 @@ class MicroloanControllerTest : BaseIntegrationTest() {
     fun `find should return OK`() {
         val microloanId = createMicroloan()
         mockMvc.perform(
-            get("$API_PREFIX/microloans/$microloanId")
+            get("/microloans/$microloanId")
         ).andExpectAll(
             status().isOk,
             jsonPath("$.name").isNotEmpty
@@ -37,7 +37,7 @@ class MicroloanControllerTest : BaseIntegrationTest() {
     fun `update should return OK`() {
         val microloanId = createMicroloan()
         mockMvc.perform(
-            put("$API_PREFIX/microloans/$microloanId")
+            put("/microloans/$microloanId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     createMicroloanDto()
@@ -55,13 +55,13 @@ class MicroloanControllerTest : BaseIntegrationTest() {
     fun `delete should return NO_CONTENT`() {
         val microloanId = createMicroloan()
         mockMvc.perform(
-            delete("$API_PREFIX/microloans/$microloanId")
+            delete("/microloans/$microloanId")
         ).andExpect(status().isNoContent)
     }
 
     private fun createMicroloan(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/microloans")
+            post("/microloans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createMicroloanDto().toJson())
         ).andExpectAll(

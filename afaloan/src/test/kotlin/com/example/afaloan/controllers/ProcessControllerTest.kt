@@ -1,14 +1,14 @@
 package com.example.afaloan.controllers
 
 import com.example.afaloan.BaseIntegrationTest
-import com.example.afaloan.controller.bids.dtos.CreateBidRequest
-import com.example.afaloan.controller.bids.dtos.CreateBidResponse
-import com.example.afaloan.controller.boilingpoints.dtos.CreateBoilingPointResponse
-import com.example.afaloan.controller.microloans.dtos.CreateMicroloanResponse
-import com.example.afaloan.controller.processes.dtos.CreateProcessRequest
-import com.example.afaloan.controller.processes.dtos.CreateProcessResponse
-import com.example.afaloan.controller.processes.dtos.ProcessDto
-import com.example.afaloan.controller.profiles.dtos.CreateProfileResponse
+import com.example.afaloan.controllers.bids.dtos.CreateBidRequest
+import com.example.afaloan.controllers.bids.dtos.CreateBidResponse
+import com.example.afaloan.controllers.boilingpoints.dtos.CreateBoilingPointResponse
+import com.example.afaloan.controllers.microloans.dtos.CreateMicroloanResponse
+import com.example.afaloan.controllers.processes.dtos.CreateProcessRequest
+import com.example.afaloan.controllers.processes.dtos.CreateProcessResponse
+import com.example.afaloan.controllers.processes.dtos.ProcessDto
+import com.example.afaloan.controllers.profiles.dtos.CreateProfileResponse
 import com.example.afaloan.models.enumerations.BidPriority
 import com.example.afaloan.models.enumerations.ProcessStatus
 import com.example.afaloan.utils.toObject
@@ -37,7 +37,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
     fun `find should return OK`() {
         val processId = createProcess()
         mockMvc.perform(
-            get("$API_PREFIX/processes/$processId")
+            get("/processes/$processId")
         ).andExpectAll(
             status().isOk,
             jsonPath("$.debt").isNotEmpty,
@@ -51,7 +51,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
     fun `findPage should return OK`() {
         createProcess()
         mockMvc.perform(
-            get("$API_PREFIX/processes")
+            get("/processes")
                 .param("page", "0")
         ).andExpectAll(
             status().isOk,
@@ -66,7 +66,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
     fun `update should return OK`() {
         val processId = createProcess()
         mockMvc.perform(
-            put("$API_PREFIX/processes/$processId")
+            put("/processes/$processId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     ProcessDto(
@@ -87,7 +87,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
 
     private fun createProcess(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/processes")
+            post("/processes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     CreateProcessRequest(
@@ -105,7 +105,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
 
     private fun createBid(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/bids")
+            post("/bids")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     CreateBidRequest(
@@ -127,7 +127,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
 
     private fun createProfile(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/profiles")
+            post("/profiles")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateProfileRequest().toJson())
         ).andExpectAll(
@@ -139,7 +139,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
 
     private fun createMicroloan(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/microloans")
+            post("/microloans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createMicroloanDto().toJson())
         ).andExpectAll(
@@ -151,7 +151,7 @@ class ProcessControllerTest : BaseIntegrationTest() {
 
     private fun createBoilingPoint(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/boiling-points")
+            post("/boiling-points")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateBoilingPointRequest().toJson())
         ).andExpectAll(

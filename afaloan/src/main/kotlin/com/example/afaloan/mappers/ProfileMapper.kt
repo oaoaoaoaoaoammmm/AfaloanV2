@@ -1,20 +1,16 @@
 package com.example.afaloan.mappers
 
-import com.example.afaloan.controller.profiles.dtos.CreateProfileRequest
-import com.example.afaloan.controller.profiles.dtos.ProfileDto
-import com.example.afaloan.controller.profiles.dtos.UpdateProfileRequest
+import com.example.afaloan.controllers.profiles.dtos.CreateProfileRequest
+import com.example.afaloan.controllers.profiles.dtos.ProfileDto
+import com.example.afaloan.controllers.profiles.dtos.UpdateProfileRequest
 import com.example.afaloan.models.Profile
-import com.example.afaloan.services.UserService
 import com.example.afaloan.utils.SecurityContext
 import org.springframework.stereotype.Component
 
 @Component
-class ProfileMapper(
-    private val userService: UserService
-) {
+class ProfileMapper {
 
     fun convert(request: CreateProfileRequest): Profile {
-        val userId = SecurityContext.getAuthorizedUserId()
         return Profile(
             name = request.name,
             surname = request.surname,
@@ -25,12 +21,11 @@ class ProfileMapper(
             snils = request.snils,
             inn = request.inn,
             monthlyIncome = request.monthlyIncome,
-            user = userService.find(userId)
+            userId = SecurityContext.getAuthorizedUserId()
         )
     }
 
     fun convert(request: UpdateProfileRequest): Profile {
-        val userId = SecurityContext.getAuthorizedUserId()
         return Profile(
             name = request.name,
             surname = request.surname,
@@ -39,7 +34,7 @@ class ProfileMapper(
             passportSeries = request.passportSeries,
             passportNumber = request.passportNumber,
             monthlyIncome = request.monthlyIncome,
-            user = userService.find(userId)
+            userId = SecurityContext.getAuthorizedUserId()
         )
     }
 

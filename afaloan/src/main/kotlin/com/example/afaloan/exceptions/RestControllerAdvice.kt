@@ -2,7 +2,6 @@ package com.example.afaloan.exceptions
 
 import com.example.afaloan.exceptions.ErrorUtil.asResponseEntity
 import com.example.afaloan.utils.logger
-import io.jsonwebtoken.JwtException
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
@@ -42,13 +41,6 @@ class RestControllerAdvice {
     fun fileException(exception: Exception): ResponseEntity<Error> {
         logger.error(exception) { "Error with file resolution" }
         return Error(status = HttpStatus.BAD_REQUEST.value(), code = ErrorCode.WRONG_FILE)
-            .asResponseEntity()
-    }
-
-    @ExceptionHandler(JwtException::class)
-    fun jwtException(ex: JwtException): ResponseEntity<Error> {
-        logger.error(ex) { "JWT error" }
-        return Error(status = HttpStatus.BAD_REQUEST.value(), code = ErrorCode.TOKEN_INCORRECT_FORMAT)
             .asResponseEntity()
     }
 

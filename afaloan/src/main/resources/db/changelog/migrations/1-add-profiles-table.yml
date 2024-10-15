@@ -1,0 +1,60 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-profiles-table
+      author: d.afanasev
+      changes:
+        - createTable:
+            schemaName: application
+            tableName: profiles
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patronymic
+                  type: varchar(20)
+              - column:
+                  name: phone_number
+                  type: varchar(12)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: passport_series
+                  type: varchar(4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: passport_number
+                  type: varchar(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: snils
+                  type: varchar(14)
+              - column:
+                  name: inn
+                  type: varchar(14)
+              - column:
+                  name: monthly_income
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
