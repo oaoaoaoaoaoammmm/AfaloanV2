@@ -2,15 +2,24 @@ package org.example.afauser.controllers.auth
 
 import jakarta.validation.Valid
 import org.example.afauser.controllers.auth.AuthController.Companion.ROOT_URI
-import org.example.afauser.controllers.auth.dtos.*
+import org.example.afauser.controllers.auth.dtos.AuthorizeUserRequest
+import org.example.afauser.controllers.auth.dtos.AuthorizationDetails
+import org.example.afauser.controllers.auth.dtos.AuthorizeUserResponse
+import org.example.afauser.controllers.auth.dtos.RegisterUserRequest
+import org.example.afauser.controllers.auth.dtos.RegisterUserResponse
 import org.example.afauser.mappers.AuthMapper
 import org.example.afauser.services.AuthService
-import org.example.afauser.services.UserService
-import org.example.afauser.utils.SecurityContext
 import org.example.afauser.utils.logger
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+
 import reactor.core.publisher.Mono
 
 @RestController
@@ -18,7 +27,6 @@ import reactor.core.publisher.Mono
 class AuthController(
     private val authMapper: AuthMapper,
     private val authService: AuthService,
-    private val userService: UserService
 ) {
 
     @PostMapping
@@ -35,7 +43,7 @@ class AuthController(
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     fun getAuthDetails(): Mono<AuthorizationDetails> {
-        logger.trace { "Get authorization details for user - ${SecurityContext.getAuthorizedUserUsername()}" }
+        logger.trace { "Get authorization details for user" }
         return authService.getAuthDetails()
     }
 

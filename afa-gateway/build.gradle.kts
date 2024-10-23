@@ -31,6 +31,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("io.github.oshai:kotlin-logging-jvm:$kLoggingVersion")
 

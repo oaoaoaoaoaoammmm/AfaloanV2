@@ -20,11 +20,30 @@ class RouteConfiguration {
         @Value("\${server.api.prefix}") apiPrefix: String,
     ): RouteLocator {
         return route.routes {
-            route(id = "${props.afaloanService}-route") {
-                path("$apiPrefix/**")
-                uri("lb://${props.afaloanService}")
+            route(id = "${props.afaUser}-route-auth") {
+                uri("lb://${props.afaUser}")
+                path("$apiPrefix/auth/**")
+                filters { stripPrefix(2) }
+            }
+            route(id = "${props.afaUser}-route-users") {
+                uri("lb://${props.afaUser}")
+                path("$apiPrefix/users/**")
                 filters {
-                    stripPrefix(apiPrefix.split("/").size)
+                    stripPrefix(2)
+                    filter(authFilter.apply(AuthenticationFilter.Config))
+                }
+            }
+            route(id = "${props.afaloan}-route") {
+                uri("lb://${props.afaloan}")
+                path(
+                    "$apiPrefix/bids/**",
+                    "$apiPrefix/boiling-points/**",
+                    "$apiPrefix/microloans/**",
+                    "$apiPrefix/profiles/**",
+                    "$apiPrefix/processes/**",
+                )
+                filters {
+                    stripPrefix(2)
                     filter(authFilter.apply(AuthenticationFilter.Config))
                 }
             }

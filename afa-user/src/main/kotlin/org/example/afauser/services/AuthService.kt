@@ -6,7 +6,6 @@ import org.example.afauser.controllers.auth.dtos.AuthorizeUserResponse
 import org.example.afauser.exceptions.ErrorCode
 import org.example.afauser.exceptions.InternalException
 import org.example.afauser.models.User
-import org.example.afauser.models.enumerations.Role
 import org.example.afauser.utils.SecurityContext
 import org.example.afauser.utils.logger
 import org.springframework.http.HttpStatus
@@ -38,13 +37,7 @@ class AuthService(
 
     fun getAuthDetails(): Mono<AuthorizationDetails> {
         logger.info { "Getting authorization details..." }
-        return Mono.just(
-            AuthorizationDetails(
-                SecurityContext.getAuthorizedUserId(),
-                SecurityContext.getAuthorizedUserUsername(),
-                SecurityContext.getAuthorizedUserRoles().map { Role.valueOf(it) }
-            )
-        )
+        return SecurityContext.getAuthorizationDetails()
     }
 
     fun authorize(authUser: User): Mono<AuthorizeUserResponse> {

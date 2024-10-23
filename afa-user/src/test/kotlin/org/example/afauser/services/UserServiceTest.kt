@@ -6,29 +6,20 @@ import org.example.afauser.models.enumerations.Role
 import org.example.afauser.repositories.UserRepository
 import org.example.afauser.utils.UNAUTHORIZED_USER
 import org.example.afauser.utils.USER
-import org.example.afauser.utils.mockSecurityContext
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.springframework.security.core.context.SecurityContextHolder
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.expectError
 import reactor.test.StepVerifier
+import java.util.UUID
 
 class UserServiceTest {
 
     private val userRepository = mock<UserRepository>()
 
     private val userService = UserService(userRepository)
-
-    @BeforeEach
-    fun setUp() = mockSecurityContext()
-
-    @AfterEach
-    fun tearDown() = SecurityContextHolder.clearContext()
 
     @Test
     fun `isExists should return true`() {
@@ -108,42 +99,23 @@ class UserServiceTest {
 
     @Test
     fun `delete(id UUID) should execute successfully`() {
-        whenever(userRepository.findById(USER.id!!)).thenReturn(Mono.just(USER))
-        whenever(userRepository.deleteById(USER.id!!)).thenReturn(Mono.empty())
+        whenever(userRepository.findById(any<UUID>())).thenReturn(Mono.just(USER))
+        whenever(userRepository.delete(any<User>())).thenReturn(Mono.empty())
 
         StepVerifier.create(userService.delete(USER.id!!))
             .expectNext()
             .expectComplete()
             .verify()
     }
-
-    @Test
-    fun `delete(id UUID) should throw FORBIDDEN`() {
-        whenever(userRepository.findById(USER.id!!)).thenReturn(Mono.just(UNAUTHORIZED_USER))
-
-        StepVerifier.create(userService.delete(USER.id!!))
-            .expectError(InternalException::class)
-            .verify()
-    }
-
 
     @Test
     fun `delete(username String) should execute successfully`() {
-        whenever(userRepository.findByUsername(any())).thenReturn(Mono.just(USER))
-        whenever(userRepository.deleteByUsername(USER.username)).thenReturn(Mono.empty())
+        whenever(userRepository.findByUsername(any<String>())).thenReturn(Mono.just(USER))
+        whenever(userRepository.delete(any<User>())).thenReturn(Mono.empty())
 
         StepVerifier.create(userService.delete(USER.username))
             .expectNext()
             .expectComplete()
-            .verify()
-    }
-
-    @Test
-    fun `delete(username String) should throw FORBIDDEN`() {
-        whenever(userRepository.findByUsername(any())).thenReturn(Mono.just(UNAUTHORIZED_USER))
-
-        StepVerifier.create(userService.delete(USER.username))
-            .expectError(InternalException::class)
             .verify()
     }
 }

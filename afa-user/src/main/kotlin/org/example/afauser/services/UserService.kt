@@ -5,7 +5,6 @@ import org.example.afauser.exceptions.InternalException
 import org.example.afauser.models.User
 import org.example.afauser.models.enumerations.Role
 import org.example.afauser.repositories.UserRepository
-import org.example.afauser.utils.SecurityContext
 import org.example.afauser.utils.logger
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -48,7 +47,7 @@ class UserService(
         return find(id).flatMap { user ->
             val updatedUser = user.copy(role = role)
             logger.info { "User updating role - $role with id - $id" }
-            userRepository.save(updatedUser)
+            return@flatMap userRepository.save(updatedUser)
         }
     }
 
@@ -57,7 +56,7 @@ class UserService(
         return find(id).flatMap { user ->
             val updatedUser = user.copy(blocked = true)
             logger.info { "User blocking with id - $id" }
-            userRepository.save(updatedUser)
+            return@flatMap userRepository.save(updatedUser)
         }
     }
 
@@ -66,7 +65,7 @@ class UserService(
         return find(id).flatMap { user ->
             val updatedUser = user.copy(blocked = false)
             logger.info { "User unblocking with id - $id" }
-            userRepository.save(updatedUser)
+            return@flatMap userRepository.save(updatedUser)
         }
     }
 
@@ -75,35 +74,23 @@ class UserService(
         return find(id).flatMap { user ->
             val updatedUser = user.copy(confirmed = true)
             logger.info { "User confirmed with id - $id" }
-            userRepository.save(updatedUser)
+            return@flatMap userRepository.save(updatedUser)
         }
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     fun delete(id: UUID): Mono<Void> {
         return find(id).flatMap { user ->
-            val userId = SecurityContext.getAuthorizedUserId()
-            if (user.id != userId) {
-                return@flatMap Mono.error(
-                    InternalException(httpStatus = HttpStatus.FORBIDDEN, errorCode = ErrorCode.FORBIDDEN)
-                )
-            }
             logger.info { "Deleting user by id - $id" }
-            userRepository.deleteById(id)
+            return@flatMap userRepository.delete(user)
         }
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     fun delete(username: String): Mono<Void> {
         return find(username).flatMap { user ->
-            val userId = SecurityContext.getAuthorizedUserId()
-            if (user.id != userId) {
-                return@flatMap Mono.error(
-                    InternalException(httpStatus = HttpStatus.FORBIDDEN, errorCode = ErrorCode.FORBIDDEN)
-                )
-            }
             logger.info { "Deleting user by username - $username" }
-            userRepository.deleteByUsername(username)
+            return@flatMap userRepository.delete(user)
         }
     }
 }

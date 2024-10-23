@@ -5,6 +5,6 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding
 
 @ConfigurationProperties(prefix = "spring.services.urls")
 data class ServiceUrlsProperties@ConstructorBinding constructor(
-    val userService: String,
-    val afaloanService: String
+    val afaUser: String,
+    val afaloan: String
 )

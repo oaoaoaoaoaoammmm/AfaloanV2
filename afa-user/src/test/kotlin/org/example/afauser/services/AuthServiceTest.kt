@@ -7,12 +7,16 @@ import org.example.afauser.exceptions.ErrorCode
 import org.example.afauser.exceptions.InternalException
 import org.example.afauser.utils.UNAUTHORIZED_USER
 import org.example.afauser.utils.USER
+import org.example.afauser.utils.mockSecurityContext
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.expectError
@@ -25,6 +29,12 @@ class AuthServiceTest {
     private val authProvider = mock<AuthenticationProvider>()
 
     private val authService = AuthService(userService, encoder, authProvider)
+
+    @BeforeEach
+    fun setUp() = mockSecurityContext()
+
+    @AfterEach
+    fun tearDown() = SecurityContextHolder.clearContext()
 
     @Test
     fun `register should execute successfully`() {

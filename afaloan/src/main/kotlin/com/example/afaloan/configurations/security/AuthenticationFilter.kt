@@ -5,7 +5,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -21,7 +21,7 @@ class AuthenticationFilter : OncePerRequestFilter() {
     ) {
         val userId = request.getHeader(USER_ID)?.let { UUID.fromString(it) }
         val username = request.getHeader(USERNAME)?.takeIf { it.isNotBlank() }
-        val userRoles = request.getHeader(USER_ROLES)?.toObject<Set<GrantedAuthority>>()
+        val userRoles = request.getHeader(USER_ROLES)?.toObject<List<String>>()?.map { SimpleGrantedAuthority(it) }
         if (userId != null && username != null && userRoles != null) {
             SecurityContextHolder.getContext().authentication =
                 UsernamePasswordAuthenticationToken(userId, username, userRoles)

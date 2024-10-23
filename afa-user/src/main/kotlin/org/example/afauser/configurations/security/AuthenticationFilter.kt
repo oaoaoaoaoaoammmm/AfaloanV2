@@ -29,7 +29,11 @@ class AuthenticationFilter(
                 throw InternalException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_EXPIRED)
             }
         }
-        return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth))
+        return if (auth != null) {
+            chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth))
+        } else {
+            chain.filter(exchange)
+        }
     }
 
     companion object {

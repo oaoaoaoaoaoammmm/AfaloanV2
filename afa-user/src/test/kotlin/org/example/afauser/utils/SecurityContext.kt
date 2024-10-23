@@ -10,15 +10,23 @@ import org.springframework.security.test.context.TestSecurityContextHolder
 
 fun mockSecurityContext() {
     val securityContext = mock<SecurityContext>()
-    val authentication = createTestAuthentication()
+    val authentication = createMockAuthentication()
     whenever(securityContext.authentication).thenReturn(authentication)
     TestSecurityContextHolder.setContext(securityContext)
 }
 
-fun createTestAuthentication(): Authentication {
+fun createMockAuthentication(): Authentication {
     val auth = mock<UsernamePasswordAuthenticationToken>()
     whenever(auth.principal).thenReturn(USER.id!!.toString())
     whenever(auth.credentials).thenReturn(USER.username)
     whenever(auth.authorities).thenReturn(listOf(SimpleGrantedAuthority(USER.role.name)))
     return auth
+}
+
+fun createAuthentication(): Authentication {
+    return UsernamePasswordAuthenticationToken(
+        USER.id!!.toString(),
+        USER.username,
+        listOf(SimpleGrantedAuthority(USER.role.name))
+    )
 }
