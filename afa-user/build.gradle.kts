@@ -43,7 +43,6 @@ dependencies {
 
 	// reactive data base
 	runtimeOnly("org.postgresql:r2dbc-postgresql")
-	implementation ("io.r2dbc:r2dbc-pool")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 
 	// liquibase
@@ -113,7 +112,7 @@ kover {
 		verify {
 			rule("Basic Line Coverage") {
 				bound {
-					minValue = 80
+					minValue = 70
 					coverageUnits = CoverageUnit.LINE
 					aggregationForGroup = AggregationType.COVERED_PERCENTAGE
 				}

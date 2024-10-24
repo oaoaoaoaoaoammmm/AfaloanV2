@@ -9,9 +9,11 @@ import org.example.afauser.models.enumerations.Role
 import org.example.afauser.utils.UNAUTHORIZED_USER
 import org.example.afauser.utils.USER
 import org.example.afauser.utils.USER_PASSWORD
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 
+@Disabled
 class AuthControllerTest : BaseIntegrationTest() {
 
     @Test

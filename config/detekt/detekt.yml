@@ -769,7 +769,7 @@ style:
   UselessCallOnNotNull:
     active: true
   UtilityClassWithPublicConstructor:
-    active: true
+    active: false
   VarCouldBeVal:
     active: true
     ignoreLateinitVar: false

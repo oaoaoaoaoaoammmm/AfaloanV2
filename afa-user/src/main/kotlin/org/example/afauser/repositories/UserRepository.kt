@@ -10,6 +10,4 @@ interface UserRepository : ReactiveCrudRepository<User, UUID> {
     fun existsByUsername(username: String): Mono<Boolean>
 
     fun findByUsername(username: String): Mono<User>
-
-    fun deleteByUsername(username: String): Mono<Void>
 }
