@@ -1,44 +1,37 @@
 package com.example.afaloan.configurations.security
 
-import com.example.afaloan.exceptions.ErrorCode
-import com.example.afaloan.exceptions.InternalException
+import com.example.afaloan.utils.toObject
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.util.*
 
 @Component
-class AuthenticationFilter(
-    private val authenticationProvider: AuthenticationProvider
-): OncePerRequestFilter() {
+class AuthenticationFilter : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val bearerToken = request.getHeader(AUTHORIZATION)?.let {
-            if (it.startsWith(BEARER_PREFIX)) it.substring(BEARER_PREFIX_LENGTH)
-            else throw InternalException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_DOES_NOT_EXIST)
-        }
-        bearerToken?.let {
-            if (authenticationProvider.isValid(bearerToken)) {
-                authenticationProvider.getAuthentication(bearerToken).let {
-                    SecurityContextHolder.getContext().authentication = it
-                }
-            } else {
-                throw InternalException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_EXPIRED)
-            }
+        val userId = request.getHeader(USER_ID)?.let { UUID.fromString(it) }
+        val username = request.getHeader(USERNAME)?.takeIf { it.isNotBlank() }
+        val userRoles = request.getHeader(USER_ROLES)?.toObject<List<String>>()?.map { SimpleGrantedAuthority(it) }
+        if (userId != null && username != null && userRoles != null) {
+            SecurityContextHolder.getContext().authentication =
+                UsernamePasswordAuthenticationToken(userId, username, userRoles)
         }
         filterChain.doFilter(request, response)
     }
 
     private companion object {
-        const val AUTHORIZATION = "Authorization"
-        const val BEARER_PREFIX = "Bearer "
-        const val BEARER_PREFIX_LENGTH = 7
+        const val USER_ID = "UserId"
+        const val USERNAME = "Username"
+        const val USER_ROLES = "UserRoles"
     }
 }

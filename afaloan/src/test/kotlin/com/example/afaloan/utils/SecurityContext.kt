@@ -1,6 +1,5 @@
 package com.example.afaloan.utils
 
-import com.example.afaloan.models.UserRole
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -8,6 +7,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.*
 
 fun mockSecurityContext() {
     val securityContext = mock<SecurityContext>()
@@ -18,11 +18,11 @@ fun mockSecurityContext() {
 
 private fun createTestAuthentication(): Authentication {
     val auth = mock<UsernamePasswordAuthenticationToken>()
-    whenever(auth.principal).thenReturn(USER.id!!.toString())
-    whenever(auth.credentials).thenReturn(USER.username)
+    whenever(auth.principal).thenReturn(USER_ID.toString())
+    whenever(auth.credentials).thenReturn(USERNAME)
     whenever(auth.authorities).thenReturn(
-        USER.roles.map(UserRole::role)
-            .map { SimpleGrantedAuthority(it.name) }
+        listOf(ROLE_SUPERVISOR, ROLE_WORKER, ROLE_CUSTOMER)
+            .map { SimpleGrantedAuthority(it) }
     )
     return auth
 }

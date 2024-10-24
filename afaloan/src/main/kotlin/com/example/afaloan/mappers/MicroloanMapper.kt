@@ -1,6 +1,6 @@
 package com.example.afaloan.mappers
 
-import com.example.afaloan.controller.microloans.dtos.MicroloanDto
+import com.example.afaloan.controllers.microloans.dtos.MicroloanDto
 import com.example.afaloan.models.Microloan
 import org.springframework.stereotype.Component
 

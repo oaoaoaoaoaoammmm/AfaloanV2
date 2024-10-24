@@ -1,8 +1,8 @@
 package com.example.afaloan.mappers
 
-import com.example.afaloan.controller.bids.dtos.BidDto
-import com.example.afaloan.controller.bids.dtos.BidView
-import com.example.afaloan.controller.bids.dtos.CreateBidRequest
+import com.example.afaloan.controllers.bids.dtos.BidDto
+import com.example.afaloan.controllers.bids.dtos.BidView
+import com.example.afaloan.controllers.bids.dtos.CreateBidRequest
 import com.example.afaloan.models.Bid
 import com.example.afaloan.models.enumerations.BidStatus
 import com.example.afaloan.services.BoilingPointService

@@ -57,7 +57,7 @@ class ProfileServiceTest {
         val profile = createProfile()
         whenever(profileRepository.findByIdAndUserId(any(), any())).thenReturn(profile)
 
-        val result = profileService.find(profile.id!!, profile.user!!.id!!)
+        val result = profileService.find(profile.id!!, profile.userId)
 
         assertThat(result.id).isEqualTo(profile.id)
         assertThat(result.name).isEqualTo(profile.name)
@@ -69,6 +69,28 @@ class ProfileServiceTest {
         whenever(profileRepository.findByIdAndUserId(any(), any())).thenReturn(null)
 
         val ex = assertThrows<InternalException> { profileService.find(UUID.randomUUID(), UUID.randomUUID()) }
+
+        assertThat(ex.httpStatus).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(ex.errorCode).isEqualTo(ErrorCode.PROFILE_NOT_FOUND)
+    }
+
+    @Test
+    fun `findByUserId should execute successfully`() {
+        val profile = createProfile()
+        whenever(profileRepository.findByUserId(any())).thenReturn(profile)
+
+        val result = profileService.findByUserId(profile.userId)
+
+        assertThat(result.id).isEqualTo(profile.id)
+        assertThat(result.name).isEqualTo(profile.name)
+        assertThat(result.phoneNumber).isEqualTo(profile.phoneNumber)
+    }
+
+    @Test
+    fun `findByUserId should throw NOT_FOUND`() {
+        whenever(profileRepository.findByUserId(any())).thenReturn(null)
+
+        val ex = assertThrows<InternalException> { profileService.findByUserId(UUID.randomUUID()) }
 
         assertThat(ex.httpStatus).isEqualTo(HttpStatus.NOT_FOUND)
         assertThat(ex.errorCode).isEqualTo(ErrorCode.PROFILE_NOT_FOUND)

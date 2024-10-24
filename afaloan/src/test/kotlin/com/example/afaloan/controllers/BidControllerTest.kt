@@ -1,12 +1,12 @@
 package com.example.afaloan.controllers
 
 import com.example.afaloan.BaseIntegrationTest
-import com.example.afaloan.controller.bids.dtos.BidDto
-import com.example.afaloan.controller.bids.dtos.CreateBidRequest
-import com.example.afaloan.controller.bids.dtos.CreateBidResponse
-import com.example.afaloan.controller.boilingpoints.dtos.CreateBoilingPointResponse
-import com.example.afaloan.controller.microloans.dtos.CreateMicroloanResponse
-import com.example.afaloan.controller.profiles.dtos.CreateProfileResponse
+import com.example.afaloan.controllers.bids.dtos.BidDto
+import com.example.afaloan.controllers.bids.dtos.CreateBidRequest
+import com.example.afaloan.controllers.bids.dtos.CreateBidResponse
+import com.example.afaloan.controllers.boilingpoints.dtos.CreateBoilingPointResponse
+import com.example.afaloan.controllers.microloans.dtos.CreateMicroloanResponse
+import com.example.afaloan.controllers.profiles.dtos.CreateProfileResponse
 import com.example.afaloan.models.enumerations.BidPriority
 import com.example.afaloan.models.enumerations.BidStatus
 import com.example.afaloan.utils.toObject
@@ -39,7 +39,7 @@ class BidControllerTest: BaseIntegrationTest() {
     fun `findPageByBoilingPointId should return OK`() {
         val bid = createBidAndGet()
         mockMvc.perform(
-            get("$API_PREFIX/bids")
+            get("/bids")
                 .param("page", "0")
                 .param("boilingPointId", bid.boilingPointId.toString())
         ).andExpectAll(
@@ -54,7 +54,7 @@ class BidControllerTest: BaseIntegrationTest() {
     fun `findPageByProfileId should return OK`() {
         val bid = createBidAndGet()
         mockMvc.perform(
-            get("$API_PREFIX/bids")
+            get("/bids")
                 .param("page", "0")
                 .param("profileId", bid.profileId.toString())
         ).andExpectAll(
@@ -69,7 +69,7 @@ class BidControllerTest: BaseIntegrationTest() {
     fun `findPageByMicroloanId should return OK`() {
         val bid = createBidAndGet()
         mockMvc.perform(
-            get("$API_PREFIX/bids")
+            get("/bids")
                 .param("page", "0")
                 .param("microloanId", bid.microloanId.toString())
         ).andExpectAll(
@@ -84,7 +84,7 @@ class BidControllerTest: BaseIntegrationTest() {
     fun `updateStatus should return NO_CONTENT`() {
         val bidId = createBid()
         mockMvc.perform(
-            patch("$API_PREFIX/bids/$bidId")
+            patch("/bids/$bidId")
                 .param("status", BidStatus.REJECTED.name)
                 .param("employeeMessage", "не не не... не не не.")
         ).andExpect(status().isNoContent)
@@ -93,7 +93,7 @@ class BidControllerTest: BaseIntegrationTest() {
     private fun createBidAndGet(): BidDto {
         val bidId = createBid()
         return mockMvc.perform(
-            get("$API_PREFIX/bids/$bidId")
+            get("/bids/$bidId")
         ).andExpectAll(
             status().isOk,
             jsonPath("$.target").isNotEmpty,
@@ -104,7 +104,7 @@ class BidControllerTest: BaseIntegrationTest() {
 
     private fun createBid(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/bids")
+            post("/bids")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     CreateBidRequest(
@@ -126,7 +126,7 @@ class BidControllerTest: BaseIntegrationTest() {
 
     private fun createProfile(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/profiles")
+            post("/profiles")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateProfileRequest().toJson())
         ).andExpectAll(
@@ -138,7 +138,7 @@ class BidControllerTest: BaseIntegrationTest() {
 
     private fun createMicroloan(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/microloans")
+            post("/microloans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createMicroloanDto().toJson())
         ).andExpectAll(
@@ -150,7 +150,7 @@ class BidControllerTest: BaseIntegrationTest() {
 
     private fun createBoilingPoint(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/boiling-points")
+            post("/boiling-points")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateBoilingPointRequest().toJson())
         ).andExpectAll(

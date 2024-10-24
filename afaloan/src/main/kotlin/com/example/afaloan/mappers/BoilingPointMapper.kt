@@ -1,7 +1,7 @@
 package com.example.afaloan.mappers
 
-import com.example.afaloan.controller.boilingpoints.dtos.CreateBoilingPointRequest
-import com.example.afaloan.controller.boilingpoints.dtos.UpdateBoilingPointRequest
+import com.example.afaloan.controllers.boilingpoints.dtos.CreateBoilingPointRequest
+import com.example.afaloan.controllers.boilingpoints.dtos.UpdateBoilingPointRequest
 import com.example.afaloan.models.BoilingPoint
 import org.springframework.stereotype.Component
 

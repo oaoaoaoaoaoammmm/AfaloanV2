@@ -1,51 +1,34 @@
 package com.example.afaloan.utils
 
-import com.example.afaloan.controller.bids.dtos.CreateBidRequest
-import com.example.afaloan.controller.boilingpoints.dtos.CreateBoilingPointRequest
-import com.example.afaloan.controller.boilingpoints.dtos.UpdateBoilingPointRequest
-import com.example.afaloan.controller.microloans.dtos.MicroloanDto
-import com.example.afaloan.controller.processes.dtos.CreateProcessRequest
-import com.example.afaloan.controller.processes.dtos.ProcessDto
-import com.example.afaloan.controller.profiles.dtos.CreateProfileRequest
-import com.example.afaloan.controller.profiles.dtos.UpdateProfileRequest
+import com.example.afaloan.controllers.bids.dtos.CreateBidRequest
+import com.example.afaloan.controllers.boilingpoints.dtos.CreateBoilingPointRequest
+import com.example.afaloan.controllers.boilingpoints.dtos.UpdateBoilingPointRequest
+import com.example.afaloan.controllers.microloans.dtos.MicroloanDto
+import com.example.afaloan.controllers.processes.dtos.CreateProcessRequest
+import com.example.afaloan.controllers.processes.dtos.ProcessDto
+import com.example.afaloan.controllers.profiles.dtos.CreateProfileRequest
+import com.example.afaloan.controllers.profiles.dtos.UpdateProfileRequest
+import com.example.afaloan.models.Profile
 import com.example.afaloan.models.Bid
-import com.example.afaloan.models.User
 import com.example.afaloan.models.BoilingPoint
 import com.example.afaloan.models.Microloan
 import com.example.afaloan.models.Process
-import com.example.afaloan.models.Profile
-import com.example.afaloan.models.UserRole
 import com.example.afaloan.models.enumerations.BidPriority
 import com.example.afaloan.models.enumerations.BidStatus
 import com.example.afaloan.models.enumerations.ProcessStatus
-import com.example.afaloan.models.enumerations.Role
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-const val USER_PASSWORD = "12345"
+val USER_ID: UUID = UUID.randomUUID()
 
-const val ENCODED_USER_PASSWORD = "\$2a\$10\$.IEUyyxTZjIGYnDHOcFW3e8AD5QFAKWj7nu7NM1NfBs.wE6AtC83a"
+const val USERNAME = "username"
 
-var USER = User(
-    id = UUID.randomUUID(),
-    username = "john.doe@mail.ru",
-    password = ENCODED_USER_PASSWORD,
-    confirmed = true,
-    confirmedUsername = true,
-    blocked = false,
-    roles = setOf()
-)
+const val ROLE_SUPERVISOR = "SUPERVISOR"
 
-val UNAUTHORIZED_USER = User(
-    id = UUID.randomUUID(),
-    username = "johan.do@mail.ru",
-    password = "12345678",
-    confirmed = false,
-    confirmedUsername = false,
-    blocked = false,
-    roles = setOf(UserRole(id = UUID.randomUUID(), Role.CUSTOMER))
-)
+const val ROLE_WORKER = "WORKER"
+
+const val ROLE_CUSTOMER = "CUSTOMER"
 
 /**
  * Profile
@@ -60,7 +43,7 @@ fun createProfile() = Profile(
     passportSeries = "1234",
     passportNumber = "123456",
     monthlyIncome = BigDecimal.TEN,
-    user = USER
+    userId = USER_ID
 )
 
 fun createCreateProfileRequest() = CreateProfileRequest(

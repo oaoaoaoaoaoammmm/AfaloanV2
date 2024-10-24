@@ -1,3 +1,9 @@
+spring:
+  services:
+    urls:
+      afa-user: ${AFA_USER_NAME:afa-user}
+      afaloan: ${AFALOAN_NAME:afaloan}
+
 management:
   endpoints:
     web.exposure.include: "*"

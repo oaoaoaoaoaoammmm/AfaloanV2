@@ -29,26 +29,26 @@ class ProfileService(
             ?: throw InternalException(httpStatus = HttpStatus.NOT_FOUND, errorCode = ErrorCode.PROFILE_NOT_FOUND)
     }
 
-    fun findByUserID(userId: UUID): Profile {
+    fun findByUserId(userId: UUID): Profile {
         logger.info { "Find profile by user id - $userId" }
         return profileRepository.findByUserId(userId)
             ?: throw InternalException(httpStatus = HttpStatus.NOT_FOUND, errorCode = ErrorCode.PROFILE_NOT_FOUND)
     }
 
     fun create(profile: Profile): UUID {
-        logger.info { "Creating profile for user with id - ${profile.user!!.id}" }
+        logger.info { "Creating profile for user with id - ${profile.userId}" }
         return profileRepository.save(profile).id!!
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     fun update(id: UUID, profile: Profile): Profile {
-        logger.info { "Updating profile for user with id - ${profile.user!!.id}" }
-        val oldProfile = find(id, profile.user!!.id!!)
+        logger.info { "Updating profile for user with id - ${profile.userId}" }
+        val oldProfile = find(id, profile.userId)
         val newProfile = profile.copy(
             id = oldProfile.id,
             snils = oldProfile.snils,
             inn = oldProfile.inn,
-            user = oldProfile.user
+            userId = oldProfile.userId
         )
         return profileRepository.save(newProfile)
     }

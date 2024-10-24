@@ -1,0 +1,27 @@
+info:
+  app:
+    name: afa-user
+    description: User service
+  team:
+    name: D2 team
+
+spring:
+  application:
+    name: afa-user
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  r2dbc:
+    properties:
+      schema: application
+
+  liquibase:
+    liquibaseSchema: migration
+    change-log: classpath:/db/changelog/master.yml
+
+springdoc:
+  api-docs:
+    enabled: true
+
+server:
+  port: ${PORT:8383}

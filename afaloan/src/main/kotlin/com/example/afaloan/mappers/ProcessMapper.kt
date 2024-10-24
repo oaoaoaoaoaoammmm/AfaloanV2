@@ -1,8 +1,8 @@
 package com.example.afaloan.mappers
 
-import com.example.afaloan.controller.processes.dtos.CreateProcessRequest
-import com.example.afaloan.controller.processes.dtos.ProcessDto
-import com.example.afaloan.controller.processes.dtos.ProcessView
+import com.example.afaloan.controllers.processes.dtos.CreateProcessRequest
+import com.example.afaloan.controllers.processes.dtos.ProcessDto
+import com.example.afaloan.controllers.processes.dtos.ProcessView
 import com.example.afaloan.models.Process
 import com.example.afaloan.models.enumerations.ProcessStatus
 import com.example.afaloan.services.BidService

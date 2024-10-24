@@ -6,11 +6,6 @@ enum class ErrorCode {
     INVALID_REQUEST,
     SERVICE_UNAVAILABLE,
 
-    // jwt errors
-    TOKEN_EXPIRED,
-    TOKEN_DOES_NOT_EXIST,
-    TOKEN_INCORRECT_FORMAT,
-
     // file errors
     WRONG_FILE,
     DOCUMENT_NOT_YOURS,
@@ -19,10 +14,6 @@ enum class ErrorCode {
 
     // user errors
     FORBIDDEN,
-    USER_NOT_FOUND,
-    USER_ALREADY_EXIST,
-    USER_PASSWORD_INCORRECT,
-    ROLE_NOT_FOUND,
 
     // profile errors
     PROFILE_NOT_FOUND,

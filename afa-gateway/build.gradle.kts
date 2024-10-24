@@ -22,6 +22,8 @@ repositories {
 
 extra["springCloudVersion"] = "2023.0.3"
 
+val kLoggingVersion by extra("6.0.8")
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
@@ -29,6 +31,9 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    implementation("io.github.oshai:kotlin-logging-jvm:$kLoggingVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

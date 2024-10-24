@@ -1,8 +1,8 @@
 package com.example.afaloan.controllers
 
 import com.example.afaloan.BaseIntegrationTest
-import com.example.afaloan.controller.profiles.dtos.CreateProfileResponse
-import com.example.afaloan.controller.profiles.dtos.ProfileDto
+import com.example.afaloan.controllers.profiles.dtos.CreateProfileResponse
+import com.example.afaloan.controllers.profiles.dtos.ProfileDto
 import com.example.afaloan.utils.createCreateProfileRequest
 import com.example.afaloan.utils.createUpdateProfileRequest
 import com.example.afaloan.utils.toJson
@@ -28,7 +28,7 @@ class ProfileControllerTest : BaseIntegrationTest() {
     fun `find should return OK`() {
         val profileId = createProfile()
         mockMvc.perform(
-            get("$API_PREFIX/profiles/$profileId")
+            get("/profiles/$profileId")
         ).andExpectAll(
             status().isOk,
             jsonPath("$.id").isNotEmpty,
@@ -42,7 +42,7 @@ class ProfileControllerTest : BaseIntegrationTest() {
         val profileId = createProfile()
         val request = createUpdateProfileRequest()
         val updatedProfile = mockMvc.perform(
-            put("$API_PREFIX/profiles/$profileId")
+            put("/profiles/$profileId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request.toJson())
         ).andExpectAll(
@@ -60,7 +60,7 @@ class ProfileControllerTest : BaseIntegrationTest() {
 
     private fun createProfile(): UUID {
         val response = mockMvc.perform(
-            post("$API_PREFIX/profiles")
+            post("/profiles")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createCreateProfileRequest().toJson())
         ).andExpectAll(
